@@ -13,7 +13,7 @@ fi
 
 SEQ_LEN="64"
 BS="64"
-LR="2e-5"
+LR="2e-4"
 EPOCHS="3"
 cur_dir="data"
 LABEL_RATE="0.02"
