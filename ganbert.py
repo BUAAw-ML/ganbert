@@ -425,7 +425,10 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   if is_training:
     per_example_loss =  -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
+    tf.logging.info(per_example_loss)
+    tf.logging.info(label_mask)
     per_example_loss = tf.boolean_mask(per_example_loss, label_mask)
+    exit()
 
     labeled_example_count = tf.cast(tf.size(per_example_loss), tf.float32)
     D_L_Supervised = tf.divide(tf.reduce_sum(per_example_loss), tf.maximum(labeled_example_count, 1))
@@ -459,7 +462,6 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
     tf.logging.info("*** Features ***")
     for name in sorted(features.keys()):
       tf.logging.info("  name = %s, shape = %s" % (name, features[name].shape))
-    exit()
     input_ids = features["input_ids"]
     input_mask = features["input_mask"]
     segment_ids = features["segment_ids"]
