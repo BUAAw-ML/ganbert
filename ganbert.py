@@ -423,11 +423,6 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
-
-  print(tf.Session().run(one_hot_labels))
-  print(tf.Session().run(label_mask))
-  exit()
-
   if is_training:
     per_example_loss =  -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
     per_example_loss = tf.boolean_mask(per_example_loss, label_mask)
@@ -461,10 +456,10 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
   def model_fn(features, labels, mode, params):
     """The `model_fn` for TPUEstimator."""
 
-    # tf.logging.info("*** Features ***")
-    # for name in sorted(features.keys()):
-    #   tf.logging.info("  name = %s, shape = %s" % (name, features[name].shape))
-
+    tf.logging.info("*** Features ***")
+    for name in sorted(features.keys()):
+      tf.logging.info("  name = %s, shape = %s" % (name, features[name].shape))
+    exit()
     input_ids = features["input_ids"]
     input_mask = features["input_mask"]
     segment_ids = features["segment_ids"]
