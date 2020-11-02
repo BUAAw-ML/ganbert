@@ -424,8 +424,8 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
 
-  print(one_hot_labels)
-  print(label_mask)
+  print(tf.Session().run(one_hot_labels))
+  print(tf.Session().run(label_mask))
   exit()
 
   if is_training:
