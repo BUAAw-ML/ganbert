@@ -438,12 +438,10 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   D_fake_features, DU_fake_logits, DU_fake_prob = discriminator(x_g, hidden_size, keep_prob, is_training, num_labels, reuse=True)
   
   D_L_unsupervised1U = -1 * tf.reduce_mean(tf.math.log(1 - D_real_prob[:, 0] + epsilon))
-  
   D_L_unsupervised2U = -1 * tf.reduce_mean(tf.math.log(DU_fake_prob[:, 0] + epsilon))
   d_loss =  D_L_Supervised + D_L_unsupervised1U + D_L_unsupervised2U
   
   g_loss = -1 * tf.reduce_mean(tf.math.log(1 - DU_fake_prob[:, 0] + epsilon))
-
   G_feat_match = tf.reduce_mean(tf.square(tf.reduce_mean(D_real_features, axis=0) - tf.reduce_mean(D_fake_features, axis=0)))
   g_loss = g_loss + G_feat_match
 
@@ -467,6 +465,9 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
     segment_ids = features["segment_ids"]
     label_ids = features["label_ids"]
     label_mask = features["label_mask"]
+    print(label_ids)
+    print(label_mask)
+    exit()
     is_real_example = None
     if "is_real_example" in features:
       is_real_example = tf.cast(features["is_real_example"], dtype=tf.float32)
