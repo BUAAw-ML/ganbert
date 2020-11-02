@@ -230,7 +230,6 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
     tf.logging.info("input_ids: %s" % " ".join([str(x) for x in input_ids]))
     tf.logging.info("input_mask: %s" % " ".join([str(x) for x in input_mask]))
     tf.logging.info("segment_ids: %s" % " ".join([str(x) for x in segment_ids]))
-    tf.logging.info(label_mask)
     tf.logging.info("label: %s (id = %d)" % (example.label, label_id))
 
   feature = InputFeatures(
@@ -424,6 +423,11 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
+
+  print(one_hot_labels)
+  print(label_mask)
+  exit()
+
   if is_training:
     per_example_loss =  -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
     per_example_loss = tf.boolean_mask(per_example_loss, label_mask)
@@ -466,9 +470,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
     segment_ids = features["segment_ids"]
     label_ids = features["label_ids"]
     label_mask = features["label_mask"]
-    print(label_ids)
-    print(label_mask)
-    exit()
+
     is_real_example = None
     if "is_real_example" in features:
       is_real_example = tf.cast(features["is_real_example"], dtype=tf.float32)
