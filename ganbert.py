@@ -447,11 +447,11 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   
   D_L_unsupervised1U = -1 * tf.reduce_mean(tf.math.log(1 - D_real_prob[:, 0] + epsilon))
   D_L_unsupervised2U = -1 * tf.reduce_mean(tf.math.log(DU_fake_prob[:, 0] + epsilon))
-  d_loss =  D_L_Supervised #+ D_L_unsupervised1U + D_L_unsupervised2U
+  d_loss =  D_L_Supervised + D_L_unsupervised1U + D_L_unsupervised2U
   
   g_loss = -1 * tf.reduce_mean(tf.math.log(1 - DU_fake_prob[:, 0] + epsilon))
   G_feat_match = tf.reduce_mean(tf.square(tf.reduce_mean(D_real_features, axis=0) - tf.reduce_mean(D_fake_features, axis=0)))
-  g_loss = g_loss #+ G_feat_match
+  g_loss = g_loss + G_feat_match
 
   return (d_loss, g_loss, per_example_loss, logits, probabilities)
 
@@ -731,7 +731,7 @@ def main(_):
   if FLAGS.do_train:
     train_file = os.path.join(FLAGS.output_dir, "train.tf_record")
     num_written_examples = file_based_convert_examples_to_features(
-        labeled_examples, None, label_list, FLAGS.max_seq_length, tokenizer, train_file,
+        labeled_examples, unlabeled_examples, label_list, FLAGS.max_seq_length, tokenizer, train_file,
         label_mask_rate=label_rate)
 
     real_num_train_steps = int(
