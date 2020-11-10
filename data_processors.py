@@ -210,7 +210,7 @@ class QcFineProcessor(DataProcessor):
 
         examples = np.array(examples)
         ind = np.random.RandomState(seed=10).permutation(len(examples))
-        split = int(len(examples) * 0.05)
+        split = int(len(examples) * 0.01)
         split2 = int(len(examples) * 0.9)
         self.train_data = examples[ind[:split]].tolist()
         self.unlabeled_train_data = examples[ind[split:split2]].tolist()
