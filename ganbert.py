@@ -729,7 +729,8 @@ def main(_):
     num_written_examples = file_based_convert_examples_to_features(
         labeled_examples, unlabeled_examples, label_list, FLAGS.max_seq_length, tokenizer, train_file,
         label_mask_rate=label_rate)
-
+    print("hhh")
+    exit()
     real_num_train_steps = int(
          num_written_examples / FLAGS.train_batch_size * FLAGS.num_train_epochs)
 
