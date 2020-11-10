@@ -437,7 +437,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
     labeled_example_count = tf.cast(tf.size(per_example_loss), tf.float32)
     D_L_Supervised = tf.divide(tf.reduce_sum(per_example_loss), tf.maximum(labeled_example_count, 1))
   else:
-    per_example_loss = -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
+    per_example_loss = -tf.reduce_sum(labels * log_probs, axis=-1)
     D_L_Supervised = tf.reduce_mean(per_example_loss)
 
   z = tf.random_uniform([FLAGS.train_batch_size, LATENT_Z], minval=0, maxval=1, dtype=tf.float32, seed=SEED, name=None)
