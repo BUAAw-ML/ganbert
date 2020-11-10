@@ -411,6 +411,9 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   output_layer = model.get_pooled_output()
 
+  sess = tf.Session()
+
+  print(sess.run(labels))
   print(labels)
   exit()
 
