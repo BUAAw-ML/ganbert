@@ -413,7 +413,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   sess = tf.Session()
 
-  sess.run(tf.Print(input_ids))
+  sess.run(tf.Print(input_ids,[input_ids]))
   exit()
 
   hidden_size = output_layer.shape[-1].value
