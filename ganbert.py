@@ -475,7 +475,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
 
     is_training = (mode == tf.estimator.ModeKeys.TRAIN)
     print(label_ids)
-    print(len(label_ids))
+    print(label_ids.shape(0))
     exit()
 
     (d_loss, g_loss, per_example_loss, logits, probabilities) = create_model(
