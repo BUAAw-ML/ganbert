@@ -221,7 +221,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(input_mask) == max_seq_length
   assert len(segment_ids) == max_seq_length
 
-  label_id = np.zeros([len(self.labels)], dtype=np.int64)
+  label_id = np.zeros([len(label_list)], dtype=np.int64)
   for t in example.label:
       label_id[label_map[t]] = 1
   print(label_id)
