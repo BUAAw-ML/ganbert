@@ -413,7 +413,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   sess = tf.Session()
 
-  print(sess.run(labels))
+  print(sess.run(output_layer))
   print(labels)
   exit()
 
