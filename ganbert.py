@@ -591,8 +591,7 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
         while len(eval_examples) % FLAGS.eval_batch_size != 0:
             eval_examples.append(PaddingInputExample())
 
-    print("hhhhh")
-    exit()
+
 
     eval_file = os.path.join(FLAGS.output_dir, "eval_"+str(task_name)+".tf_record")
     file_based_convert_examples_to_features(
@@ -751,6 +750,8 @@ def main(_):
 
   if FLAGS.do_eval:
     eval_examples = processor.get_test_examples(FLAGS.data_dir)
+    print("hhhhh")
+    exit()
     evaluate(estimator=estimator, label_rate=label_rate, eval_examples=eval_examples,
               task_name=task_name, label_list=label_list, tokenizer=tokenizer)
 
