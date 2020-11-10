@@ -413,7 +413,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   hidden_size = output_layer.shape[-1].value
   print(hidden_size)
-  labels_size = labels.shape
+  labels_size = labels.shape[0]
   print(labels_size)
   exit()
   keep_prob = 1
