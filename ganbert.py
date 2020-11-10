@@ -221,7 +221,11 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(input_mask) == max_seq_length
   assert len(segment_ids) == max_seq_length
 
-  label_id = [label_map[t] for t in example.label]
+  label_id = np.zeros([len(self.labels)], dtype=np.int64)
+  for t in example.label:
+      label_id[label_map[t]] = 1
+  print(label_id)
+  exit()
 
   # if ex_index < 5:
   #   tf.logging.info("*** Example ***")
@@ -272,8 +276,7 @@ def file_based_convert_examples_to_features(
         [int(feature.is_real_example)])
 
     tf_example = tf.train.Example(features=tf.train.Features(feature=features))
-    print(tf_example)
-    exit()
+
     if label_mask_rate == 1:
         to_write_examples.append(tf_example)
     else:
@@ -742,8 +745,6 @@ def main(_):
         seq_length=FLAGS.max_seq_length,
         is_training=True,
         drop_remainder=True)
-
-
 
     estimator.train(input_fn=train_input_fn, max_steps=real_num_train_steps)
 
