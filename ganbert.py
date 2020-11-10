@@ -430,7 +430,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   # one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
   if is_training:
-    per_example_loss = -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
+    per_example_loss = -tf.reduce_sum(labels * log_probs, axis=-1)
     per_example_loss = tf.boolean_mask(per_example_loss, label_mask)
 
     labeled_example_count = tf.cast(tf.size(per_example_loss), tf.float32)
