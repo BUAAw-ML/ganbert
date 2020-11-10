@@ -91,41 +91,130 @@ class DataProcessor(object):
         lines.append(line)
       return lines
 
+# class QcFineProcessor(DataProcessor):
+#     """Processor for the MultiNLI data set (GLUE version)."""
+#
+#     def get_labeled_examples(self, data_dir):
+#         """See base class."""
+#         return self._create_examples(os.path.join(data_dir, "labeled.tsv"), "train")
+#
+#
+#     def get_unlabeled_examples(self, data_dir):
+#         """See base class."""
+#         return self._create_examples(os.path.join(data_dir, "unlabeled.tsv"), "train")
+#
+#     def get_test_examples(self, data_dir):
+#         """See base class."""
+#         return self._create_examples(os.path.join(data_dir, "test.tsv"), "test")
+#
+#     def get_labels(self):
+#         """See base class."""
+#         return ["UNK_UNK", "ABBR_abb", "ABBR_exp", "DESC_def", "DESC_desc", "DESC_manner", "DESC_reason", "ENTY_animal", "ENTY_body", "ENTY_color", "ENTY_cremat", "ENTY_currency", "ENTY_dismed", "ENTY_event", "ENTY_food", "ENTY_instru", "ENTY_lang", "ENTY_letter", "ENTY_other", "ENTY_plant", "ENTY_product", "ENTY_religion", "ENTY_sport", "ENTY_substance", "ENTY_symbol", "ENTY_techmeth", "ENTY_termeq", "ENTY_veh", "ENTY_word", "HUM_desc", "HUM_gr", "HUM_ind", "HUM_title", "LOC_city", "LOC_country", "LOC_mount", "LOC_other", "LOC_state", "NUM_code", "NUM_count", "NUM_date", "NUM_dist", "NUM_money", "NUM_ord", "NUM_other", "NUM_perc", "NUM_period", "NUM_speed", "NUM_temp", "NUM_volsize", "NUM_weight"]
+#
+#     def _create_examples(self, input_file, set_type):
+#         """Creates examples for the training and dev sets."""
+#         examples = []
+#
+#         with open(input_file, 'r') as f:
+#             contents = f.read()
+#             file_as_list = contents.splitlines()
+#             for line in file_as_list[1:]:
+#                 split = line.split(" ")
+#                 question = ' '.join(split[1:])
+#
+#                 guid = "%s-%s" % (set_type, tokenization.convert_to_unicode(line))
+#                 text_a = tokenization.convert_to_unicode(question)
+#                 inn_split = split[0].split(":")
+#                 label = inn_split[0] + "_" + inn_split[1]
+#                 examples.append(InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
+#             f.close()
+#
+#         return examples
+
 class QcFineProcessor(DataProcessor):
-    """Processor for the MultiNLI data set (GLUE version)."""
+    def __init__(self, train_data=None, unlabeled_train_data=None, test_data=None):
+        self.train_data = train_data
+        self.unlabeled_train_data = unlabeled_train_data
+        self.test_data = test_data
+        self.labels = []
 
     def get_labeled_examples(self, data_dir):
         """See base class."""
-        return self._create_examples(os.path.join(data_dir, "labeled.tsv"), "train")
+        return self.train_data
 
     def get_unlabeled_examples(self, data_dir):
         """See base class."""
-        return self._create_examples(os.path.join(data_dir, "unlabeled.tsv"), "train")
+        return self.unlabeled_train_data
 
     def get_test_examples(self, data_dir):
         """See base class."""
-        return self._create_examples(os.path.join(data_dir, "test.tsv"), "test")
+        return self.test_data
 
     def get_labels(self):
         """See base class."""
-        return ["UNK_UNK", "ABBR_abb", "ABBR_exp", "DESC_def", "DESC_desc", "DESC_manner", "DESC_reason", "ENTY_animal", "ENTY_body", "ENTY_color", "ENTY_cremat", "ENTY_currency", "ENTY_dismed", "ENTY_event", "ENTY_food", "ENTY_instru", "ENTY_lang", "ENTY_letter", "ENTY_other", "ENTY_plant", "ENTY_product", "ENTY_religion", "ENTY_sport", "ENTY_substance", "ENTY_symbol", "ENTY_techmeth", "ENTY_termeq", "ENTY_veh", "ENTY_word", "HUM_desc", "HUM_gr", "HUM_ind", "HUM_title", "LOC_city", "LOC_country", "LOC_mount", "LOC_other", "LOC_state", "NUM_code", "NUM_count", "NUM_date", "NUM_dist", "NUM_money", "NUM_ord", "NUM_other", "NUM_perc", "NUM_period", "NUM_speed", "NUM_temp", "NUM_volsize", "NUM_weight"]
+        return labels
 
-    def _create_examples(self, input_file, set_type):
-        """Creates examples for the training and dev sets."""
+    def _create_examples(self, input_file):
+
         examples = []
+        tag_occurance = {}
 
-        with open(input_file, 'r') as f:
-            contents = f.read()
-            file_as_list = contents.splitlines()
-            for line in file_as_list[1:]:
-                split = line.split(" ")
-                question = ' '.join(split[1:])
+        with open(input_file, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader)
+            for row in reader:
 
-                guid = "%s-%s" % (set_type, tokenization.convert_to_unicode(line))
-                text_a = tokenization.convert_to_unicode(question)
-                inn_split = split[0].split(":")
-                label = inn_split[0] + "_" + inn_split[1]
-                examples.append(InputExample(guid=guid, text_a=text_a, text_b=None, label=label))
-            f.close()
+                if len(row) != 4:
+                    continue
+                _, _, _, tag = row
 
-        return examples
+                tag = tag.strip().split('###')
+                tag = [t for t in tag if t != '']
+
+                for t in tag:
+                    if t not in tag_occurance:
+                        tag_occurance[t] = 1
+                    tag_occurance[t] += 1
+
+        ignored_tags = set()
+        for tag in tag_occurance:
+            if tag_occurance[tag] > 100:
+                ignored_tags.add(tag)
+            else:
+                self.labels.append(tag)
+
+        print(ignored_tags)
+
+        with open(input_file, newline='') as csvfile:
+            reader = csv.reader(csvfile)
+            next(reader)
+            for row in reader:
+
+                if len(row) != 4:
+                    continue
+                id, title, dscp, tag = row
+
+                text_a = tokenization.convert_to_unicode(title + dscp)
+
+                if len(title_tokens) + len(dscp_tokens) > 510:
+                    continue
+
+                tag = tag.strip().split('###')
+                tag = [t for t in tag if t != '']
+
+                if ignored_tags is not None:
+                    tag = [t for t in tag if t not in ignored_tags]
+
+                if len(tag) == 0:
+                    continue
+
+                examples.append(InputExample(guid=id, text_a=text_a, text_b=None, label=tag))
+
+        examples = np.array(examples)
+        ind = np.random.RandomState(seed=10).permutation(len(examples))
+        split = int(len(examples) * 0.05)
+        split2 = int(len(examples) * 0.9)
+        self.train_data = examples[ind[:split]].tolist()
+        self.unlabeled_train_data = examples[ind[split:split2]].tolist()
+        self.test_data = examples[ind[split2:]].tolist()
+
