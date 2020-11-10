@@ -250,10 +250,6 @@ def file_based_convert_examples_to_features(
     all_examples = all_examples + unlabeled_examples
   label_masks = get_labeled_mask(mask_size=len(all_examples), labeled_size=len(labeled_examples))
 
-  if unlabeled_examples == None:
-      print("hhh")
-      exit()
-
   to_write_examples = list()
   for ex_index, example in enumerate(all_examples):
     if ex_index % 10000 == 0:
@@ -728,6 +724,9 @@ def main(_):
       eval_batch_size=FLAGS.eval_batch_size,
       predict_batch_size=FLAGS.predict_batch_size)
 
+  print("hhhh")
+  exit()
+
   if FLAGS.do_train:
     train_file = os.path.join(FLAGS.output_dir, "train.tf_record")
     num_written_examples = file_based_convert_examples_to_features(
@@ -748,11 +747,11 @@ def main(_):
         drop_remainder=True)
     estimator.train(input_fn=train_input_fn, max_steps=real_num_train_steps)
 
-  # if FLAGS.do_eval:
-  #   eval_examples = processor.get_test_examples(FLAGS.data_dir)
-  #
-  #   evaluate(estimator=estimator, label_rate=label_rate, eval_examples=eval_examples,
-  #             task_name=task_name, label_list=label_list, tokenizer=tokenizer)
+  if FLAGS.do_eval:
+    eval_examples = processor.get_test_examples(FLAGS.data_dir)
+
+    evaluate(estimator=estimator, label_rate=label_rate, eval_examples=eval_examples,
+              task_name=task_name, label_list=label_list, tokenizer=tokenizer)
 
   if FLAGS.do_predict:
     predict_examples = processor.get_test_examples(FLAGS.data_dir)
