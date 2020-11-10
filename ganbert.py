@@ -412,10 +412,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   output_layer = model.get_pooled_output()
 
   hidden_size = output_layer.shape[-1].value
-  print(hidden_size)
-  labels_size = labels.shape[0]
-  print(labels_size)
-  exit()
+
   keep_prob = 1
   if is_training:
       keep_prob = DKP
@@ -428,7 +425,9 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   log_probs = tf.nn.log_softmax(logits, axis=-1)
 
-  one_hot_labels = tf.sparse_to_dense(labels, [8, num_labels], 1.0, 0.0)
+  one_hot_labels = tf.sparse_to_dense(labels, [labels.shape[0], num_labels], 1.0, 0.0)
+  print("hhh")
+  exit()
 
   # one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
