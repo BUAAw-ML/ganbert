@@ -257,8 +257,8 @@ def file_based_convert_examples_to_features(
     feature = convert_single_example(ex_index, example, label_list,
                                      max_seq_length, tokenizer, label_masks[ex_index])
 
-      if unlabeled_examples == None:
-          print("hhh")
+    if unlabeled_examples == None:
+      print("hhh")
 
 
     def create_int_feature(values):
