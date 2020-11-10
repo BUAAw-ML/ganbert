@@ -533,21 +533,29 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
           training_hooks=[logging_hook],
           scaffold_fn=scaffold_fn)
     elif mode == tf.estimator.ModeKeys.EVAL:
-      print("hhh")
-      exit()
+
       def metric_fn(per_example_loss, label_ids, logits, is_real_example):
         predictions = tf.argmax(logits, axis=-1, output_type=tf.int32)
         accuracy = tf.metrics.accuracy(
             labels=label_ids, predictions=predictions, weights=is_real_example)
+        print("accuracy")
+
         precision = tf_metrics.precision(labels=label_ids, predictions=predictions, num_classes=num_labels,
                                          weights=is_real_example)
+
+        print("precision")
         recall = tf_metrics.recall(labels=label_ids, predictions=predictions, num_classes=num_labels,
                                    weights=is_real_example)
+
+        print("recall")
         f1_micro = tf_metrics.f1(labels=label_ids, predictions=predictions, num_classes=num_labels,
                            weights=is_real_example, average='micro')
+
+        print("f1_micro")
         f1_macro = tf_metrics.f1(labels=label_ids, predictions=predictions, num_classes=num_labels,
                                  weights=is_real_example, average='macro')
         loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
+
         return {
             "eval_accuracy": accuracy,
             "eval_precision": precision,
