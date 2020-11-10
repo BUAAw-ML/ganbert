@@ -221,9 +221,9 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(input_mask) == max_seq_length
   assert len(segment_ids) == max_seq_length
 
-  label_id = np.zeros([len(label_list)], dtype=np.int64)
+  label_id = np.zeros([len(label_list)], dtype=np.float32)
   for t in example.label:
-      label_id[label_map[t]] = 1
+      label_id[label_map[t]] = 1.
 
   # if ex_index < 5:
   #   tf.logging.info("*** Example ***")
@@ -308,7 +308,7 @@ def file_based_input_fn_builder(input_file, seq_length, is_training, drop_remain
       "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
       "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
       "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
-      "label_ids": tf.FixedLenFeature([33], tf.int64),
+      "label_ids": tf.FixedLenFeature([33], tf.float32),
       "is_real_example": tf.FixedLenFeature([], tf.int64),
       "label_mask": tf.FixedLenFeature([], tf.int64),
   }
