@@ -593,8 +593,7 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
     eval_file = os.path.join(FLAGS.output_dir, "eval_"+str(task_name)+".tf_record")
     file_based_convert_examples_to_features(
         eval_examples, None, label_list, FLAGS.max_seq_length, tokenizer, eval_file, label_mask_rate=1)
-    print("hhh")
-    exit()
+
 
     tf.logging.info("***** Running evaluation *****")
     tf.logging.info("  Num examples = %d (%d actual, %d padding)",
@@ -616,6 +615,9 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
         seq_length=FLAGS.max_seq_length,
         is_training=False,
         drop_remainder=eval_drop_remainder)
+
+    print("hhh")
+    exit()
 
     result = estimator.evaluate(input_fn=eval_input_fn, steps=eval_steps)
 
