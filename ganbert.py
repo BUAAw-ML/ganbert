@@ -260,6 +260,7 @@ def file_based_convert_examples_to_features(
     feature = convert_single_example(ex_index, example, label_list,
                                      max_seq_length, tokenizer, label_masks[ex_index])
 
+
     def create_int_feature(values):
       f = tf.train.Feature(int64_list=tf.train.Int64List(value=list(values)))
       return f
@@ -592,6 +593,8 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
     eval_file = os.path.join(FLAGS.output_dir, "eval_"+str(task_name)+".tf_record")
     file_based_convert_examples_to_features(
         eval_examples, None, label_list, FLAGS.max_seq_length, tokenizer, eval_file, label_mask_rate=1)
+    print("hhh")
+    exit()
 
     tf.logging.info("***** Running evaluation *****")
     tf.logging.info("  Num examples = %d (%d actual, %d padding)",
