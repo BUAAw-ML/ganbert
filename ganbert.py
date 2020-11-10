@@ -589,13 +589,9 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
         while len(eval_examples) % FLAGS.eval_batch_size != 0:
             eval_examples.append(PaddingInputExample())
 
-
-
     eval_file = os.path.join(FLAGS.output_dir, "eval_"+str(task_name)+".tf_record")
     file_based_convert_examples_to_features(
         eval_examples, None, label_list, FLAGS.max_seq_length, tokenizer, eval_file, label_mask_rate=1)
-
-
 
     tf.logging.info("***** Running evaluation *****")
     tf.logging.info("  Num examples = %d (%d actual, %d padding)",
@@ -746,9 +742,6 @@ def main(_):
         drop_remainder=True)
 
     estimator.train(input_fn=train_input_fn, max_steps=real_num_train_steps)
-
-    print("hhh")
-    exit()
 
   if FLAGS.do_eval:
     eval_examples = processor.get_test_examples(FLAGS.data_dir)
