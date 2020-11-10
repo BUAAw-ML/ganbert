@@ -477,11 +477,6 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
     else:
       is_real_example = tf.ones(tf.shape(label_ids), dtype=tf.float32)
 
-    sess = tf.Session()
-
-    sess.run(tf.Print(is_real_example, [is_real_example]))
-    exit()
-
     is_training = (mode == tf.estimator.ModeKeys.TRAIN)
 
     (d_loss, g_loss, per_example_loss, logits, probabilities) = create_model(

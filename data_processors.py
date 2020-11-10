@@ -207,6 +207,8 @@ class QcFineProcessor(DataProcessor):
                     continue
 
                 examples.append(InputExample(guid=id, text_a=text_a, text_b=None, label=tag))
+        print(examples)
+        exit()
 
         examples = np.array(examples)
         ind = np.random.RandomState(seed=10).permutation(len(examples))
