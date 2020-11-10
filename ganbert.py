@@ -539,23 +539,15 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
         # predictions = tf.argmax(logits, axis=-1, output_type=tf.int32)
         # print(predictions)
         # exit()
-        print("!!!!!!!!!!!predictions")
+        predictions = logits
         accuracy = tf.metrics.accuracy(
             labels=label_ids, predictions=predictions, weights=is_real_example)
-        print("!!!!!!!!!!!accuracy")
-
         precision = tf_metrics.precision(labels=label_ids, predictions=predictions, num_classes=num_labels,
                                          weights=is_real_example)
-
-        print("!!!!!!!!!!!precision")
         recall = tf_metrics.recall(labels=label_ids, predictions=predictions, num_classes=num_labels,
                                    weights=is_real_example)
-
-        print("!!!!!!!!!!!recall")
         f1_micro = tf_metrics.f1(labels=label_ids, predictions=predictions, num_classes=num_labels,
                            weights=is_real_example, average='micro')
-
-        print("!!!!!!!!!!!f1_micro")
         f1_macro = tf_metrics.f1(labels=label_ids, predictions=predictions, num_classes=num_labels,
                                  weights=is_real_example, average='macro')
         loss = tf.metrics.mean(values=per_example_loss, weights=is_real_example)
