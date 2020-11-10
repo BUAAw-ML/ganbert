@@ -8,7 +8,7 @@ import os
 import csv
 import tensorflow as tf
 import tokenization
-
+import numpy as np
 
 class InputExample(object):
   """A single training/test example for simple sequence classification."""
