@@ -411,7 +411,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   output_layer = model.get_pooled_output()
 
-  print(output_layer)
+  print(labels)
   exit()
 
   hidden_size = output_layer.shape[-1].value
