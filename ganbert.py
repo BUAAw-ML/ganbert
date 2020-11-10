@@ -428,7 +428,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   # one_hot_labels = tf.sparse_to_dense(labels, [labels.shape[0], num_labels], 1.0, 0.0)
 
   # one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
-  labels = tf.to_bfloat16(labels, name='ToBFloat16')
+  labels = tf.to_float(labels, name='ToFloat')
 
   if is_training:
     per_example_loss = -tf.reduce_sum(labels * log_probs, axis=-1)
