@@ -221,7 +221,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(input_mask) == max_seq_length
   assert len(segment_ids) == max_seq_length
 
-  label_id = np.zeros([len(label_list)], dtype=np.float32)
+  label_id = np.zeros([len(label_list)], dtype=np.int64)
   for t in example.label:
       label_id[label_map[t]] = 1.
 
@@ -308,7 +308,7 @@ def file_based_input_fn_builder(input_file, seq_length, is_training, drop_remain
       "input_ids": tf.FixedLenFeature([seq_length], tf.int64),
       "input_mask": tf.FixedLenFeature([seq_length], tf.int64),
       "segment_ids": tf.FixedLenFeature([seq_length], tf.int64),
-      "label_ids": tf.FixedLenFeature([33], tf.float32),
+      "label_ids": tf.FixedLenFeature([33], tf.int64),
       "is_real_example": tf.FixedLenFeature([], tf.int64),
       "label_mask": tf.FixedLenFeature([], tf.int64),
   }
@@ -428,6 +428,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   # one_hot_labels = tf.sparse_to_dense(labels, [labels.shape[0], num_labels], 1.0, 0.0)
 
   # one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
+  labels = tf.to_bfloat16(labels, name='ToBFloat16')
 
   if is_training:
     per_example_loss = -tf.reduce_sum(labels * log_probs, axis=-1)
