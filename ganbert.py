@@ -731,7 +731,7 @@ def main(_):
   if FLAGS.do_train:
     train_file = os.path.join(FLAGS.output_dir, "train.tf_record")
     num_written_examples = file_based_convert_examples_to_features(
-        labeled_examples, unlabeled_examples, label_list, FLAGS.max_seq_length, tokenizer, train_file,
+        labeled_examples, None, label_list, FLAGS.max_seq_length, tokenizer, train_file,
         label_mask_rate=label_rate)
 
     real_num_train_steps = int(
