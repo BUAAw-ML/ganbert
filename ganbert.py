@@ -748,12 +748,11 @@ def main(_):
         drop_remainder=True)
     estimator.train(input_fn=train_input_fn, max_steps=real_num_train_steps)
 
-  if FLAGS.do_eval:
-    eval_examples = processor.get_test_examples(FLAGS.data_dir)
-    print("hhhhh")
-    exit()
-    evaluate(estimator=estimator, label_rate=label_rate, eval_examples=eval_examples,
-              task_name=task_name, label_list=label_list, tokenizer=tokenizer)
+  # if FLAGS.do_eval:
+  #   eval_examples = processor.get_test_examples(FLAGS.data_dir)
+  #
+  #   evaluate(estimator=estimator, label_rate=label_rate, eval_examples=eval_examples,
+  #             task_name=task_name, label_list=label_list, tokenizer=tokenizer)
 
   if FLAGS.do_predict:
     predict_examples = processor.get_test_examples(FLAGS.data_dir)
