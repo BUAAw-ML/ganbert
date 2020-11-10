@@ -724,9 +724,6 @@ def main(_):
       eval_batch_size=FLAGS.eval_batch_size,
       predict_batch_size=FLAGS.predict_batch_size)
 
-  print("hhhh")
-  exit()
-
   if FLAGS.do_train:
     train_file = os.path.join(FLAGS.output_dir, "train.tf_record")
     num_written_examples = file_based_convert_examples_to_features(
