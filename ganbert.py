@@ -411,6 +411,10 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   output_layer = model.get_pooled_output()
 
+  sess = tf.Session()
+  print(sess.run(output_layer))
+  exit()
+
   hidden_size = output_layer.shape[-1].value
 
   keep_prob = 1
@@ -425,12 +429,14 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   log_probs = tf.nn.log_softmax(logits, axis=-1)
 
+
+
   one_hot_labels = tf.sparse_to_dense(labels, [labels.shape[0], num_labels], 1.0, 0.0)
 
   # one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
   if is_training:
-    per_example_loss =  -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
+    per_example_loss = -tf.reduce_sum(one_hot_labels * log_probs, axis=-1)
     per_example_loss = tf.boolean_mask(per_example_loss, label_mask)
 
     labeled_example_count = tf.cast(tf.size(per_example_loss), tf.float32)
