@@ -426,8 +426,6 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   log_probs = tf.nn.log_softmax(logits, axis=-1)
 
   one_hot_labels = tf.sparse_to_dense(labels, [labels.shape[0], num_labels], 1.0, 0.0)
-  print("hhh")
-  exit()
 
   # one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
