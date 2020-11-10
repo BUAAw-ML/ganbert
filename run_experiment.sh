@@ -12,7 +12,7 @@ if [ ! -d ${BERT_BASE_DIR} ]; then
 fi
 
 SEQ_LEN="64"
-BS="64"
+BS="8"
 LR="2e-5"
 EPOCHS="3"
 cur_dir="data"
@@ -22,7 +22,7 @@ python -u ganbert.py \
         --task_name=QC-fine \
         --label_rate=${LABEL_RATE} \
         --do_train=true \
-        --do_eval=false \
+        --do_eval=true \
         --do_predict=false \
         --data_dir=${cur_dir} \
         --vocab_file=$BERT_BASE_DIR/vocab.txt \
