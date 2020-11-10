@@ -420,8 +420,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   probabilities = tf.nn.softmax(logits, axis=-1)
 
   log_probs = tf.nn.log_softmax(logits, axis=-1)
-  print(labels)
-  print(num_labels)
+
   # print(tf.sparse_to_dense(labels,[len(labels),num_labels],1.0,0.0))
   exit()
   one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
@@ -475,6 +474,9 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
       is_real_example = tf.ones(tf.shape(label_ids), dtype=tf.float32)
 
     is_training = (mode == tf.estimator.ModeKeys.TRAIN)
+    print(label_ids)
+    print(len(label_ids))
+    exit()
 
     (d_loss, g_loss, per_example_loss, logits, probabilities) = create_model(
         bert_config, is_training, input_ids, input_mask, segment_ids, label_ids,
