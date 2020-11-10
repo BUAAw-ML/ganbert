@@ -313,9 +313,6 @@ def file_based_input_fn_builder(input_file, seq_length, is_training, drop_remain
       "label_mask": tf.FixedLenFeature([], tf.int64),
   }
 
-  print("hhh")
-  exit()
-
   def _decode_record(record, name_to_features):
     """Decodes a record to a TensorFlow example."""
     example = tf.parse_single_example(record, name_to_features)
@@ -745,6 +742,10 @@ def main(_):
         seq_length=FLAGS.max_seq_length,
         is_training=True,
         drop_remainder=True)
+
+    print("hhh")
+    exit()
+
     estimator.train(input_fn=train_input_fn, max_steps=real_num_train_steps)
 
   if FLAGS.do_eval:
