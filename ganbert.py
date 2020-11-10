@@ -743,10 +743,12 @@ def main(_):
         is_training=True,
         drop_remainder=True)
 
-    print("hhh")
-    exit()
+
 
     estimator.train(input_fn=train_input_fn, max_steps=real_num_train_steps)
+
+    print("hhh")
+    exit()
 
   if FLAGS.do_eval:
     eval_examples = processor.get_test_examples(FLAGS.data_dir)
