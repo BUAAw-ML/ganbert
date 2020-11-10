@@ -533,6 +533,8 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
           training_hooks=[logging_hook],
           scaffold_fn=scaffold_fn)
     elif mode == tf.estimator.ModeKeys.EVAL:
+      print("hhh")
+      exit()
       def metric_fn(per_example_loss, label_ids, logits, is_real_example):
         predictions = tf.argmax(logits, axis=-1, output_type=tf.int32)
         accuracy = tf.metrics.accuracy(
@@ -616,12 +618,7 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
         is_training=False,
         drop_remainder=eval_drop_remainder)
 
-
-
     result = estimator.evaluate(input_fn=eval_input_fn, steps=eval_steps)
-
-    print("hhh")
-    exit()
 
     overall_result_file = open(task_name + "_statistics_GANBERT" + str(label_rate) + ".txt", "a+")
 
