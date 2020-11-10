@@ -250,6 +250,10 @@ def file_based_convert_examples_to_features(
     all_examples = all_examples + unlabeled_examples
   label_masks = get_labeled_mask(mask_size=len(all_examples), labeled_size=len(labeled_examples))
 
+  if unlabeled_examples == None:
+      print("hhh")
+      exit()
+
   to_write_examples = list()
   for ex_index, example in enumerate(all_examples):
     if ex_index % 10000 == 0:
@@ -257,9 +261,7 @@ def file_based_convert_examples_to_features(
     feature = convert_single_example(ex_index, example, label_list,
                                      max_seq_length, tokenizer, label_masks[ex_index])
 
-    if unlabeled_examples == None:
-      print("hhh")
-      exit()
+
 
 
     def create_int_feature(values):
@@ -589,14 +591,14 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
         while len(eval_examples) % FLAGS.eval_batch_size != 0:
             eval_examples.append(PaddingInputExample())
 
-
+    print("hhhhh")
+    exit()
 
     eval_file = os.path.join(FLAGS.output_dir, "eval_"+str(task_name)+".tf_record")
     file_based_convert_examples_to_features(
         eval_examples, None, label_list, FLAGS.max_seq_length, tokenizer, eval_file, label_mask_rate=1)
 
-    print("hhhhh")
-    exit()
+
 
     tf.logging.info("***** Running evaluation *****")
     tf.logging.info("  Num examples = %d (%d actual, %d padding)",
