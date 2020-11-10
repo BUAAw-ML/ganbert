@@ -271,11 +271,9 @@ def file_based_convert_examples_to_features(
     features["is_real_example"] = create_int_feature(
         [int(feature.is_real_example)])
 
-    print(features["label_ids"] )
-    exit()
-
     tf_example = tf.train.Example(features=tf.train.Features(feature=features))
-
+    print(tf_example)
+    exit()
     if label_mask_rate == 1:
         to_write_examples.append(tf_example)
     else:
@@ -289,8 +287,6 @@ def file_based_convert_examples_to_features(
                 to_write_examples.append(tf_example)
         else:
           to_write_examples.append(tf_example)
-
-
 
   writer = tf.python_io.TFRecordWriter(output_file)
   written_examples = 0
