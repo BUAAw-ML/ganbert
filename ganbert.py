@@ -259,6 +259,7 @@ def file_based_convert_examples_to_features(
 
     if unlabeled_examples == None:
       print("hhh")
+      exit()
 
 
     def create_int_feature(values):
