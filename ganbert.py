@@ -411,11 +411,6 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   output_layer = model.get_pooled_output()
 
-  sess = tf.Session()
-
-  sess.run(tf.Print(input_ids,[input_ids]))
-  exit()
-
   hidden_size = output_layer.shape[-1].value
 
   keep_prob = 1
@@ -429,8 +424,6 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   probabilities = tf.nn.softmax(logits, axis=-1)
 
   log_probs = tf.nn.log_softmax(logits, axis=-1)
-
-
 
   one_hot_labels = tf.sparse_to_dense(labels, [labels.shape[0], num_labels], 1.0, 0.0)
 
@@ -483,6 +476,11 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
       is_real_example = tf.cast(features["is_real_example"], dtype=tf.float32)
     else:
       is_real_example = tf.ones(tf.shape(label_ids), dtype=tf.float32)
+
+    sess = tf.Session()
+
+    sess.run(tf.Print(is_real_example, [is_real_example]))
+    exit()
 
     is_training = (mode == tf.estimator.ModeKeys.TRAIN)
 
