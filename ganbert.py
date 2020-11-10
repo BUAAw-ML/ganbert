@@ -74,7 +74,7 @@ flags.DEFINE_bool(
     "do_predict", False,
     "Whether to run the model in inference mode on the test set.")
 
-flags.DEFINE_integer("train_batch_size", 32, "Total batch size for training.")
+flags.DEFINE_integer("train_batch_size", 8, "Total batch size for training.")
 
 flags.DEFINE_integer("eval_batch_size", 8, "Total batch size for eval.")
 
@@ -421,7 +421,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   log_probs = tf.nn.log_softmax(logits, axis=-1)
 
-  one_hot_labels = tf.sparse_to_dense(labels, [labels.shape[0], num_labels], 1.0, 0.0)
+  one_hot_labels = tf.sparse_to_dense(labels, [8, num_labels], 1.0, 0.0)
 
   # one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
