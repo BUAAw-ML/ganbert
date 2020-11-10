@@ -61,7 +61,7 @@ flags.DEFINE_bool(
     "models and False for cased models.")
 
 flags.DEFINE_integer(
-    "max_seq_length", 128,
+    "max_seq_length", 500,##128,
     "The maximum total input sequence length after WordPiece tokenization. "
     "Sequences longer than this will be truncated, and sequences shorter "
     "than this will be padded.")
@@ -221,7 +221,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(input_mask) == max_seq_length
   assert len(segment_ids) == max_seq_length
 
-  label_id = label_map[example.label]
+  label_id = [label_map[t] for t in example.label]
   # if ex_index < 5:
   #   tf.logging.info("*** Example ***")
   #   tf.logging.info("guid: %s" % (example.guid))
@@ -421,6 +421,7 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
 
   log_probs = tf.nn.log_softmax(logits, axis=-1)
 
+  exit()
   one_hot_labels = tf.one_hot(labels, depth=num_labels, dtype=tf.float32)
 
   if is_training:
@@ -656,10 +657,10 @@ def main(_):
   processor = processors[task_name]()
   processor._create_examples(input_file='../../datasets/multiLabel_text_classification/ProgrammerWeb/programweb-data.csv')
 
-  print(processor.train_data)
   label_list = processor.get_labels()
   print(label_list)
-  exit()
+  print(len(label_list))
+
   tokenizer = tokenization.FullTokenizer(
       vocab_file=FLAGS.vocab_file, do_lower_case=FLAGS.do_lower_case)
 
@@ -687,6 +688,7 @@ def main(_):
     unlabeled_examples = processor.get_unlabeled_examples(FLAGS.data_dir)
 
     num_train_examples = len(labeled_examples) + len(unlabeled_examples)
+    print(num_train_examples)
 
     num_train_steps = int(
          num_train_examples / FLAGS.train_batch_size * FLAGS.num_train_epochs)

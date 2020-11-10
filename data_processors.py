@@ -152,7 +152,7 @@ class QcFineProcessor(DataProcessor):
 
     def get_labels(self):
         """See base class."""
-        return labels
+        return self.labels
 
     def _create_examples(self, input_file):
 
@@ -182,8 +182,6 @@ class QcFineProcessor(DataProcessor):
                 ignored_tags.add(tag)
             else:
                 self.labels.append(tag)
-
-        print(ignored_tags)
 
         with open(input_file, newline='') as csvfile:
             reader = csv.reader(csvfile)
