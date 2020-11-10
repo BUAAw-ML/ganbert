@@ -539,7 +539,7 @@ def model_fn_builder(bert_config, num_labels, init_checkpoint, learning_rate,
         # predictions = tf.argmax(logits, axis=-1, output_type=tf.int32)
         # print(predictions)
         # exit()
-        predictions = logits
+        predictions = tf.nn.softmax(logits, axis=-1)
         accuracy = tf.metrics.accuracy(
             labels=label_ids, predictions=predictions, weights=is_real_example)
         precision = tf_metrics.precision(labels=label_ids, predictions=predictions, num_classes=num_labels,
