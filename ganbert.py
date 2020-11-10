@@ -412,6 +412,10 @@ def create_model(bert_config, is_training, input_ids, input_mask, segment_ids,
   output_layer = model.get_pooled_output()
 
   hidden_size = output_layer.shape[-1].value
+  print(hidden_size)
+  labels_size = labels.shape
+  print(labels_size)
+  exit()
   keep_prob = 1
   if is_training:
       keep_prob = DKP
