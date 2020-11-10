@@ -225,7 +225,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   for t in example.label:
       label_id[label_map[t]] = 1
 
-  print(example.label)
+  print(label_map[example.label])
   print(label_id)
   exit()
 
