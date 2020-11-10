@@ -616,10 +616,12 @@ def evaluate(estimator, label_rate, eval_examples, task_name, label_list, tokeni
         is_training=False,
         drop_remainder=eval_drop_remainder)
 
-    print("hhh")
-    exit()
+
 
     result = estimator.evaluate(input_fn=eval_input_fn, steps=eval_steps)
+
+    print("hhh")
+    exit()
 
     overall_result_file = open(task_name + "_statistics_GANBERT" + str(label_rate) + ".txt", "a+")
 
