@@ -222,6 +222,7 @@ def convert_single_example(ex_index, example, label_list, max_seq_length,
   assert len(segment_ids) == max_seq_length
 
   label_id = [label_map[t] for t in example.label]
+
   # if ex_index < 5:
   #   tf.logging.info("*** Example ***")
   #   tf.logging.info("guid: %s" % (example.guid))
@@ -257,9 +258,6 @@ def file_based_convert_examples_to_features(
     feature = convert_single_example(ex_index, example, label_list,
                                      max_seq_length, tokenizer, label_masks[ex_index])
 
-
-
-
     def create_int_feature(values):
       f = tf.train.Feature(int64_list=tf.train.Int64List(value=list(values)))
       return f
@@ -272,6 +270,9 @@ def file_based_convert_examples_to_features(
     features["label_mask"] = create_int_feature([feature.label_mask])
     features["is_real_example"] = create_int_feature(
         [int(feature.is_real_example)])
+
+    print(features["label_ids"] )
+    exit()
 
     tf_example = tf.train.Example(features=tf.train.Features(feature=features))
 
@@ -288,6 +289,8 @@ def file_based_convert_examples_to_features(
                 to_write_examples.append(tf_example)
         else:
           to_write_examples.append(tf_example)
+
+
 
   writer = tf.python_io.TFRecordWriter(output_file)
   written_examples = 0
