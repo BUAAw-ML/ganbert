@@ -196,7 +196,7 @@ class QcFineProcessor(DataProcessor):
 
                 text_a = tokenization.convert_to_unicode(title + dscp)
 
-                if len(title_tokens) + len(dscp_tokens) > 510:
+                if len(text_a) > 510:
                     continue
 
                 tag = tag.strip().split('###')
